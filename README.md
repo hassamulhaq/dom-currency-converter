@@ -4,6 +4,9 @@ WordPress Plugin, it will replace currency symbol & value with openexchangerates
 
 
 
+> This plugin will change the USD symbol/value with AED symbol/value according to current rate of dollar. This plugin is for eagle booking.
+> But you can modify DOM classes according to your theme and use this plugin.
+
 Place your API key at `$app_id`
 
 `$symbols` accepts multiple currencies with comma separated.

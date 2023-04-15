@@ -81,14 +81,6 @@ register_deactivation_hook( __FILE__, 'dom_currency_converter_deactivate' );
  * create a cronjob
  *
  */
-// Schedule a daily cron job
-/*add_action('dom_currency_converter_wp', 'dom_currency_converter_schedule_cron');
-function dom_currency_converter_schedule_cron()
-{
-    if (!wp_next_scheduled('dom_currency_converter_cron')) {
-        wp_schedule_event(time(), 'myplugin_minute', 'dom_currency_converter_cron');
-    }
-}*/
 
 // Define the function that will run when the cron job is triggered
 add_action('dom_currency_converter_cron', 'dom_currency_converter_run_cron');
@@ -198,31 +190,6 @@ function fetchCurrencyFromApi($cronjob = null)
         error_log("An error occurred: {$e->getMessage()}" . "\n", 3, $log_file_path);
     }
 }
-
-// Read from the file
-//$readFile = fopen("openexchangeratesorg-aed.txt", "r");
-//$fileData = fread($readFile, filesize("openexchangeratesorg-aed.txt"));
-//fclose($readFile);
-
-// create a new DOMDocument object
-/*$fileData = file_get_contents('openexchangeratesorg-aed.txt');
-$doc = new DOMDocument();
-// create a new hidden input field
-try {
-    $input = $doc->createElement('input');
-    $input->setAttribute('type', 'hidden');
-    $input->setAttribute('id', 'openexchangeratesorg_usd_to_aed_value');
-    $input->setAttribute('name', 'openexchangeratesorg_usd_to_aed_value');
-    $input->setAttribute('value', "{$fileData}");
-    // append the input field to the DOM
-    $doc->appendChild($input);
-    // get the HTML string for the DOM
-    $html = $doc->saveHTML();
-    // output the HTML string
-    echo $html;
-} catch (DOMException $e) {
-    error_log("{$e->getMessage()}" . "\n", 3, $log_file);
-}*/
 
 function dom_currency_converter_enqueue_scripts()
 {

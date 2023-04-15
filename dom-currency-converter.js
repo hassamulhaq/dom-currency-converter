@@ -1,50 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-/*		(function() {
-            const send = XMLHttpRequest.prototype.send;
-            XMLHttpRequest.prototype.send = function() {
-                const self = this;
-                const intervalId = window.setInterval(function () {
-                    if (self.readyState !== 4) {
-                        // execute your code here
-                        console.log('XHR AJAX request is being sent...');
-                    } else {
-                        window.clearInterval(intervalId);
-                    }
-                    if (self.readyState === 4) {
-                        //readFile("/openexchangeratesorg-aed.txt");
-                    }
-                    console.log('self.readyState', self.readyState);
-                }, 1);
-                send.apply(this, arguments);
-			};
-		})();*/
-    // const paginationButton = document.querySelector('.pagination-button');
-/*    paginationButton.addEventListener('click', function(event) {
-        if (event.target.classList.contains('pagination-button')) {
-            // Run code here for when the specific button is clicked
-            console.log('Specific button clicked');
-        }
-    });*/
-
-
-    //let rootPath = location.pathname.split('/').slice(0,2).join('/');
-/*    let usd_to_aed_value = document.getElementById("openexchangeratesorg_usd_to_aed_value")?.value ?? 0;
-
-    let priceCurrencyElements = document.querySelectorAll('.price-currency');
-    priceCurrencyElements.forEach((element) => {
-        element.textContent = 'AED';
-    });
-    // Loop through each span element and get its value
-    let priceAmountElements = document.querySelectorAll('.price-amount');
-    priceAmountElements.forEach((priceElement) => {
-        let currentValue = parseFloat(priceElement.textContent.trim());
-        let newValue = currentValue * usd_to_aed_value;
-        priceElement.textContent = newValue.toFixed(2);
-    });
-    console.log('usd_to_aed_value', usd_to_aed_value);*/
-
-
-
     let usd_to_aed_value = 0;
     function readFile(filePath) {
         const xhr = new XMLHttpRequest();
@@ -53,9 +7,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const fileData = xhr.responseText;
                 // Do something with the file data here
-                console.log(fileData); usd_to_aed_value = fileData;
+                console.log("Today 1USD is equal to " + fileData + "AED" ); //usd_to_aed_value = fileData;
                 // Get all the <span> elements with the class "price-currency"
-                let priceCurrencyElements = document.querySelectorAll('.price-currency');
+                /*let priceCurrencyElements = document.querySelectorAll('.price-currency');
                 priceCurrencyElements.forEach((element) => {
                     element.textContent = 'AED';
                 });
@@ -65,6 +19,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     let currentValue = parseFloat(priceElement.textContent.trim());
                     let newValue = currentValue * usd_to_aed_value;
                     priceElement.textContent = newValue.toFixed(2);
+                });*/
+
+                // Get all the elements with the class "normal-price"
+                const normalPrices = document.querySelectorAll('.normal-price');
+                // Loop through each normal price element
+                normalPrices.forEach(normalPrice => {
+                    // Get the price-currency and price-amount elements for this normal price
+                    const currency = normalPrice.querySelector('.price-currency');
+                    const amount = normalPrice.querySelector('.price-amount');
+                    if (currency.textContent === 'USD') {
+                        currency.textContent = 'AED';
+                        amount.textContent = (amount.textContent.trim() * usd_to_aed_value).toFixed(2);
+                    } else {
+                        console.log('Currency is Already in AED. No need to convert.');
+                    }
                 });
                 console.log('usd_to_aed_value', usd_to_aed_value);
             }
@@ -74,4 +43,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const openexchangeratesorgAedFilePath = openexchangeratesorg_data.openexchangeratesorg_aed_file_path;
     readFile(openexchangeratesorgAedFilePath);
+
+
+    /**
+     * Interval with 3s is required
+     * because of ajax pagination and room loads
+     *
+     */
+    // Trigger the readFile() function every 3 seconds
+    setInterval(function() {
+        console.log('DOM Currency Converter Interval.');
+        readFile(openexchangeratesorgAedFilePath);
+    }, 3000);
 });
