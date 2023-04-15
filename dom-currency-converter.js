@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const fileData = xhr.responseText;
                 // Do something with the file data here
                 console.log("Today 1USD is equal to " + fileData + "AED" ); //usd_to_aed_value = fileData;
+                usd_to_aed_value = fileData;
+
                 // Get all the <span> elements with the class "price-currency"
                 /*let priceCurrencyElements = document.querySelectorAll('.price-currency');
                 priceCurrencyElements.forEach((element) => {
@@ -30,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const amount = normalPrice.querySelector('.price-amount');
                     if (currency.textContent === 'USD') {
                         currency.textContent = 'AED';
-                        amount.textContent = (amount.textContent.trim() * usd_to_aed_value).toFixed(2);
+                        amount.textContent = (amount.textContent * usd_to_aed_value).toFixed(2);
                     } else {
                         console.log('Currency is Already in AED. No need to convert.');
                     }
