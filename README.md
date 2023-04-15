@@ -145,5 +145,6 @@ Activation
     DOM Currency Converter plugin.      
 ```
 
-Zante Eagle Booking Plugin
+Zante Eagle Booking Plugin `https://themeforest.net/item/hotel-zante-hotel-wordpress-theme/22325268`
+
 ![preview/eagle-booking-plugin-settings.png](preview/eagle-booking-plugin-settings.png)
