@@ -1,0 +1,9 @@
+---------------
+Permissions assigned successfully to file: [logs.txt]
+Let's create new [openexchangeratesorg-aed.txt] file!
+Permissions assigned successfully to file: /home/domain/public_html/wp-content/plugins/dom-currency-converter/openexchangeratesorg-aed.txt
+cronjob triggered!
+fetchCurrencyFromApi triggered
+Price updated
+The [openexchangeratesorg-aed.txt] file exists!
+Permissions assigned successfully to file: /home/domain/public_html/wp-content/plugins/dom-currency-converter/openexchangeratesorg-aed.txt
