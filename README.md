@@ -128,3 +128,21 @@ function dom_currency_converter_deactivate() {
 register_activation_hook( __FILE__, 'dom_currency_converter_activate' );
 register_deactivation_hook( __FILE__, 'dom_currency_converter_deactivate' );
 ```
+____
+____
+
+#### In case you are using Zante Theme + Eagle Booking plugin then follow these steps
+Activation
+```text
+1. Activate (DOM Currency Converter) plugin
+2. Go to Eagle Booking > Settings > General Settings > Currency
+3. Change AED to USD
+4. And all rooms prices will be like USD20, and DOM Currency Converter will change these into AED74.
+5. Because you are changing AED to USD in eagle booking then also change room prices by edit each room.
+5i. Suppose your room price was AED74, and you change Eagle booking currency AED to USD
+    then your listing price on frontend will be USD74 instead of AED74,
+    So, edit that room and update price in USD. And rest to the USD to AED money exchange rate will be handle by
+    DOM Currency Converter plugin.      
+```
+
+
