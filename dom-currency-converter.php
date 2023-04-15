@@ -47,7 +47,7 @@ function dom_currency_converter_activate() {
     // Assign read and write permissions to the file
     $file = fopen($filepath, "w");
     // Add a string to the file
-    fwrite($file, $rate_aed ?? 0);
+    fwrite($file, $rate_aed ?? 3.6725);
     // Close the file
     fclose($file);
     chmod($filepath, 0777);
@@ -125,7 +125,7 @@ function fetchCurrencyFromApi($cronjob = null)
         $timestamp = '';
         $base = '';
         $rates = [];
-        $rate_aed = 0;
+        $rate_aed = 3.6725; //Since 1997, the dirham has been pegged to the US dollar at the rate of 1 USD = 3.6725 AED.
         error_log('fetchCurrencyFromApi triggered' . "\n", 3, $log_file_path);
         //if (!is_null($cronjob) && $cronjob == 'true') {
         $app_id = '';
@@ -156,7 +156,7 @@ function fetchCurrencyFromApi($cronjob = null)
             $timestamp = $oxr_latest['timestamp'] ?? '';
             $base = $oxr_latest['base'] ?? '';
             $rates = $oxr_latest['rates'] ?? [];
-            $rate_aed = $rates['AED'] ?? 0;
+            $rate_aed = $rates['AED'] ?? 3.6725;
             //}
             error_log('Price updated' . "\n", 3, $log_file_path);
         }
