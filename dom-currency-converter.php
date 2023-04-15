@@ -105,8 +105,8 @@ add_filter('cron_schedules', 'dom_currency_converter_cron_interval');
 function dom_currency_converter_cron_interval($schedules)
 {
     $schedules['myplugin_minute'] = array(
-        'interval' => 60,
-        'display' => esc_html__('Every Minute')
+        'interval' => 86400, // 24 hours in seconds
+        'display' => esc_html__('Every 24 Hours')
     );
 
     return $schedules;
@@ -227,7 +227,11 @@ try {
 function dom_currency_converter_enqueue_scripts()
 {
     // Enqueue the JavaScript file
-    wp_enqueue_script('dom-currency-converter-script', plugin_dir_url(__FILE__) . 'dom-currency-converter.js');
+    wp_enqueue_script( 'dom-currency-converter-script', plugins_url( 'dom-currency-converter.js', __FILE__ ), array(), '1.0.0', true );
+    wp_localize_script( 'dom-currency-converter-script', 'openexchangeratesorg_data', array(
+        //'openexchangeratesorg_aed_file_path' => plugin_dir_path( __FILE__ ) . 'openexchangeratesorg-aed.txt',
+        'openexchangeratesorg_aed_file_path' => str_replace( ABSPATH, '/', plugin_dir_path( __FILE__ ) ) . 'openexchangeratesorg-aed.txt',
+    ));
 }
 
 add_action('wp_enqueue_scripts', 'dom_currency_converter_enqueue_scripts');

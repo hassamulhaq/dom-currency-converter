@@ -71,5 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         xhr.send();
     }
-    readFile("/openexchangeratesorg-aed.txt");
+
+    const openexchangeratesorgAedFilePath = openexchangeratesorg_data.openexchangeratesorg_aed_file_path;
+    readFile(openexchangeratesorgAedFilePath);
 });
