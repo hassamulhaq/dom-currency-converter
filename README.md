@@ -145,4 +145,5 @@ Activation
     DOM Currency Converter plugin.      
 ```
 
-
+Zante Eagle Booking Plugin
+![preview/eagle-booking-plugin-settings.png](preview/eagle-booking-plugin-settings.png)
