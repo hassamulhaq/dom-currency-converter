@@ -36,27 +36,20 @@ function dom_currency_converter_activate() {
 
 
     // Create a txt file, and from that file we read converted currency value
+    error_log('Let\'s create new [openexchangeratesorg-aed.txt] file!' . "\n", 3, $log_file);
     $filepath = plugin_dir_path(__FILE__) . 'openexchangeratesorg-aed.txt';
-    if (file_exists($filepath)) {
-        error_log('The [openexchangeratesorg-aed.txt] file exists!' . "\n", 3, $log_file);
+    // Assign read and write permissions to the file
+    $file = fopen($filepath, "w");
+    // Add a string to the file
+    fwrite($file, $rate_aed ?? 0);
+    // Close the file
+    fclose($file);
+    chmod($filepath, 0777);
+    if (!chmod($filepath, 0777)) {
+        error_log("Failed to assign permissions to file: {$filepath}" . "\n", 3, $log_file);
     } else {
-        error_log('The [openexchangeratesorg-aed.txt] file does not exist!' . "\n", 3, $log_file);
-        error_log('Let\'s create new [openexchangeratesorg-aed.txt] file!' . "\n", 3, $log_file);
-        // Assign read and write permissions to the file
-        $file = fopen($filepath, "w");
-        // Add a string to the file
-        fwrite($file, $rate_aed ?? 0);
-        // Close the file
-        fclose($file);
-        chmod($filepath, 0777);
-        if (!chmod($filepath, 0777)) {
-            error_log("Failed to assign permissions to file: {$filepath}" . "\n", 3, $log_file);
-        } else {
-            error_log("Permissions assigned successfully to file: {$filepath}" . "\n", 3, $log_file);
-        }
+        error_log("Permissions assigned successfully to file: {$filepath}" . "\n", 3, $log_file);
     }
-
-
 
     // create cronjob
     if (!wp_next_scheduled('dom_currency_converter_cron')) {
@@ -95,7 +88,9 @@ function dom_currency_converter_schedule_cron()
 add_action('dom_currency_converter_cron', 'dom_currency_converter_run_cron');
 function dom_currency_converter_run_cron()
 {
+    global $log_file;
     // Your code goes here
+    error_log("cronjob triggered!" . "\n", 3, $log_file);
     fetchCurrencyFromApi();
 }
 
