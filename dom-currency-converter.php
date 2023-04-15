@@ -15,12 +15,18 @@ License: GPL2
  *
  */
 // Define the path to the log file
-global $log_file;
-//$log_file = plugin_dir_path(__FILE__) . 'logs.txt';
+$log_file = plugin_dir_path(__FILE__) . 'logs.txt';
+if (!file_exists($log_file)) {
+    $log_file_path = plugin_dir_path( __FILE__ ) . 'logs.txt';
+    $log_file_open = fopen($log_file_path, "w");
+    fwrite($log_file_open, "---------------\n");
+    // Close the file
+    fclose($log_file_open);
+    chmod($log_file_path, 0777);
+}
 
 function dom_currency_converter_activate() {
     // create a new log file in the plugin directory
-    global $log_file;
     $log_file_path = plugin_dir_path( __FILE__ ) . 'logs.txt';
     $log_file_open = fopen($log_file_path, "w");
     // Add a string to the file
@@ -29,14 +35,14 @@ function dom_currency_converter_activate() {
     fclose($log_file_open);
     chmod($log_file_path, 0777);
     if (!chmod($log_file_path, 0777)) {
-        error_log("Failed to assign permissions to file: [logs.txt]" . "\n", 3, $log_file);
+        error_log("Failed to assign permissions to file: [logs.txt]" . "\n", 3, $log_file_path);
     } else {
-        error_log("Permissions assigned successfully to file: [logs.txt]" . "\n", 3, $log_file);
+        error_log("Permissions assigned successfully to file: [logs.txt]" . "\n", 3, $log_file_path);
     }
 
 
     // Create a txt file, and from that file we read converted currency value
-    error_log('Let\'s create new [openexchangeratesorg-aed.txt] file!' . "\n", 3, $log_file);
+    error_log('Let\'s create new [openexchangeratesorg-aed.txt] file!' . "\n", 3, $log_file_path);
     $filepath = plugin_dir_path(__FILE__) . 'openexchangeratesorg-aed.txt';
     // Assign read and write permissions to the file
     $file = fopen($filepath, "w");
@@ -46,9 +52,9 @@ function dom_currency_converter_activate() {
     fclose($file);
     chmod($filepath, 0777);
     if (!chmod($filepath, 0777)) {
-        error_log("Failed to assign permissions to file: {$filepath}" . "\n", 3, $log_file);
+        error_log("Failed to assign permissions to file: {$filepath}" . "\n", 3, $log_file_path);
     } else {
-        error_log("Permissions assigned successfully to file: {$filepath}" . "\n", 3, $log_file);
+        error_log("Permissions assigned successfully to file: {$filepath}" . "\n", 3, $log_file_path);
     }
 
     // create cronjob
@@ -88,9 +94,9 @@ function dom_currency_converter_schedule_cron()
 add_action('dom_currency_converter_cron', 'dom_currency_converter_run_cron');
 function dom_currency_converter_run_cron()
 {
-    global $log_file;
+    $log_file_path = plugin_dir_path(__FILE__) . 'logs.txt';
     // Your code goes here
-    error_log("cronjob triggered!" . "\n", 3, $log_file);
+    error_log("cronjob triggered!" . "\n", 3, $log_file_path);
     fetchCurrencyFromApi();
 }
 
@@ -120,15 +126,15 @@ function dom_currency_converter_cron_interval($schedules)
 // CRON job to check USD price on every morning
 function fetchCurrencyFromApi($cronjob = null)
 {
+    $log_file_path = plugin_dir_path(__FILE__) . 'logs.txt';
     try {
-        global $log_file;
         $disclaimer = '';
         $license = '';
         $timestamp = '';
         $base = '';
         $rates = [];
         $rate_aed = 0;
-        error_log('fetchCurrencyFromApi triggered' . "\n", 3, $log_file);
+        error_log('fetchCurrencyFromApi triggered' . "\n", 3, $log_file_path);
         //if (!is_null($cronjob) && $cronjob == 'true') {
         $app_id = '';
         $symbols = 'AED';
@@ -148,7 +154,7 @@ function fetchCurrencyFromApi($cronjob = null)
         $json = curl_exec($ch);
 
         if (curl_errno($ch)) {
-            error_log('Error: ' . curl_error($ch) . "\n", 3, $log_file);
+            error_log('Error: ' . curl_error($ch) . "\n", 3, $log_file_path);
         } else {
             // Decode JSON response:
             $oxr_latest = json_decode($json, true);
@@ -160,7 +166,7 @@ function fetchCurrencyFromApi($cronjob = null)
             $rates = $oxr_latest['rates'] ?? [];
             $rate_aed = $rates['AED'] ?? 0;
             //}
-            error_log('Price updated' . "\n", 3, $log_file);
+            error_log('Price updated' . "\n", 3, $log_file_path);
         }
         curl_close($ch);
         //}
@@ -177,19 +183,19 @@ function fetchCurrencyFromApi($cronjob = null)
         $filename = "openexchangeratesorg-aed.txt";
         $filepath = plugin_dir_path(__FILE__) . $filename;
         if (file_exists($filepath)) {
-            error_log('The [openexchangeratesorg-aed.txt] file exists!' . "\n", 3, $log_file);
+            error_log('The [openexchangeratesorg-aed.txt] file exists!' . "\n", 3, $log_file_path);
             chmod($file_path, 0777);
         } else {
-            error_log('The [openexchangeratesorg-aed.txt] file does not exist!' . "\n", 3, $log_file);
+            error_log('The [openexchangeratesorg-aed.txt] file does not exist!' . "\n", 3, $log_file_path);
         }
 
         if (!chmod($filepath, 0777)) {
-            error_log("Failed to assign permissions to file: {$filepath}" . "\n", 3, $log_file);
+            error_log("Failed to assign permissions to file: {$filepath}" . "\n", 3, $log_file_path);
         } else {
-            error_log("Permissions assigned successfully to file: {$filepath}" . "\n", 3, $log_file);
+            error_log("Permissions assigned successfully to file: {$filepath}" . "\n", 3, $log_file_path);
         }
     } catch (Exception $e) {
-        error_log("An error occurred: {$e->getMessage()}" . "\n", 3, $log_file);
+        error_log("An error occurred: {$e->getMessage()}" . "\n", 3, $log_file_path);
     }
 }
 
