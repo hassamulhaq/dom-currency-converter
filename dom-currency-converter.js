@@ -25,24 +25,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Get all the elements with the class "normal-price"
                 const normalPrices = document.querySelectorAll('.normal-price');
-                // Loop through each normal price element
-                normalPrices.forEach(normalPrice => {
-                    // Get the price-currency and price-amount elements for this normal price
-                    const currency = normalPrice.querySelector('.price-currency');
-                    const amount = normalPrice.querySelector('.price-amount');
-                    if (currency.textContent === 'USD') {
-                        currency.textContent = 'AED';
-                        amount.textContent = (amount.textContent * usd_to_aed_value).toFixed(2);
-                    } else {
-                        console.log('Currency is Already in AED. No need to convert.');
-                    }
-                });
-                console.log('usd_to_aed_value', usd_to_aed_value);
+                if (normalPrices) {
+                    // Loop through each normal price element
+                    normalPrices.forEach(normalPrice => {
+                        // Get the price-currency and price-amount elements for this normal price
+                        let currency = normalPrice.querySelector('.price-currency');
+                        let amount = normalPrice.querySelector('.price-amount');
+                        if (currency && amount) {
+                            if (currency.textContent === 'USD') {
+                                currency.textContent = 'AED';
+                                // Remove the comma separator from the string
+                                let amountParse = parseFloat(amount.textContent.replace(/,/g, ''));
+                                amount.textContent = (amountParse * usd_to_aed_value).toFixed(2);
+                            } else if (currency.textContent === 'AED') {
+                                console.log('Currency is Already in AED. No need to convert.');
+                            }
+                            else {
+                                console.log('Invalid currency symbol or currency is not in USD or AED');
+                            }
+                        } else {
+                            console.log('.price-currency and .price-amount HTML elements are not exists, Unable to convert amount!');
+                        }
+                    });
+                    console.log('usd_to_aed_value', usd_to_aed_value);
+                } else {
+                    console.log('.normal-price HTML elements are not exists, Unable to convert amount!');
+                }
             }
         };
         xhr.send();
     }
 
+    // openexchangeratesorg_data variable is in /* <![CDATA[]]> */ view page source
     const openexchangeratesorgAedFilePath = openexchangeratesorg_data.openexchangeratesorg_aed_file_path;
     readFile(openexchangeratesorgAedFilePath);
 
